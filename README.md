@@ -1,3 +1,3 @@
 # Begin.Practice
-This is just a practice of how to bash.
+This is the docker-compose file.
 Nothing else
