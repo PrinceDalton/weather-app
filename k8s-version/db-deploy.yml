@@ -4,9 +4,8 @@ metadata:
   name: thomosis-db
   labels:
     app: thomosis-db
-    apps_name: weather-app
 spec:
-  serviceName: "thomosis-db"
+  serviceName: thomosis-db
   replicas: 1
   selector:
     matchLabels:
@@ -15,16 +14,19 @@ spec:
     metadata:
       labels:
         app: thomosis-db
-        apps_name: weather-app
     spec:
       containers:
-        - name: mysql
+        - name: thomosis-db
           image: devopseasylearning/thomisis-db:v0.0.1
-          envFrom:
-            - secretRef:
-                name: thomosis-db-secret
-          ports:
-            - containerPort: 3306
+          env:
+            - name: MYSQL_ROOT_PASSWORD
+              value: my-secret-pw
+            - name: MYSQL_DATABASE
+              value: db
+            # - name: MYSQL_USER
+            #   value: auth
+            # - name: MYSQL_PASSWORD
+            #   value: my-secret-pw
           volumeMounts:
             - name: db-data
               mountPath: /var/lib/mysql
