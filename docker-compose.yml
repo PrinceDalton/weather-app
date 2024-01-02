@@ -24,7 +24,7 @@ services:
 
   weather:
     container_name: thomosis-weather
-    image: devopseasylearning/thomisis-weather:v0.0.1
+    image: prinsoo/weather-app:weather.v1
     expose:
       - 5000
     environment:
