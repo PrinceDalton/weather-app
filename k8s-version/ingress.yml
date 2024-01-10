@@ -1,46 +1,33 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: thomosis-ingress
-  annotations:
-    nginx.ingress.kubernetes.io/rewrite-target: /$1
+  name: app-ingress-internal-dns
+  labels:
+    app: app-ingress
 spec:
-  rules:
-    - host: opk-demo.com  # Replace with your actual domain
+  defaultBackend:
+    service:
+      name: alpha-ui-service
+      port:
+        number: 3000
+  rules: 
+    - host: weather.devopseasylearning.net
       http:
         paths:
-          - pathType: Prefix
-            path: /db
+          - path: /
+            pathType: Prefix
             backend:
               service:
-                name: thomosis-db
-                port:
-                  number: 3306
-          - pathType: Prefix
-            path: /redis
-            backend:
-              service:
-                name: thomosis-redis
-                port:
-                  number: 6379
-          - pathType: Prefix
-            path: /weather
-            backend:
-              service:
-                name: thomosis-weather
-                port:
+                name: alpha-weather-service
+                port: 
                   number: 5000
-          - pathType: Prefix
-            path: /auth
+    - host: auth.devopseasylearning.net
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
             backend:
               service:
-                name: thomosis-auth
-                port:
+                name: alpha-auth-service
+                port: 
                   number: 8080
-          - pathType: Prefix
-            path: /ui
-            backend:
-              service:
-                name: thomosis-ui
-                port:
-                  number: 3000

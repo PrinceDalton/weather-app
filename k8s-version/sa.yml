@@ -1,6 +1,0 @@
-apiVersion: v1
-kind: ServiceAccount
-metadata:
-  name: thomosis-service-account
-secrets:
-- name: thomosis-auth-secret

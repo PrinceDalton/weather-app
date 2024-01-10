@@ -1,0 +1,91 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Values.app_name }}
+
+spec:
+  {{- if not .Values.autoscaling.enabled }}
+  replicas: {{ .Values.replicaCount }}
+  {{- end }}
+  selector:
+    matchLabels:
+      app: {{ .Values.app_name }}
+  template:
+    metadata:
+      {{- with .Values.podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      labels:
+        app: {{ .Values.app_name }}
+    spec:
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      serviceAccountName: {{ include "ui.serviceAccountName" . }}
+      securityContext:
+        {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      containers:
+        - name: {{ .Values.app_name }}
+          securityContext:
+            {{- toYaml .Values.securityContext | nindent 12 }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          env:
+            - name: AUTH_HOST
+              valueFrom:
+                configMapKeyRef:
+                  name: {{ .Values.app_name }}-configmap
+                  key: AUTH_HOST
+            - name: AUTH_PORT
+              valueFrom:
+                configMapKeyRef:
+                  name: {{ .Values.app_name }}-configmap
+                  key: AUTH_PORT
+            - name: WEATHER_HOST
+              valueFrom:
+                configMapKeyRef:
+                  name: {{ .Values.app_name }}-configmap
+                  key: WEATHER_HOST
+            - name: WEATHER_PORT
+              valueFrom:
+                configMapKeyRef:
+                  name: {{ .Values.app_name }}-configmap
+                  key: WEATHER_PORT
+            - name: REDIS_USER
+              valueFrom:
+                configMapKeyRef:
+                  name: {{ .Values.app_name }}-configmap
+                  key: REDIS_USER
+            - name: REDIS_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.app_name }}-secret
+                  key: REDIS_PASSWORD
+          ports:
+            - name: http
+              containerPort: 3000
+              protocol: TCP
+          # livenessProbe:
+          #   httpGet:
+          #     path: /
+          #     port: http
+          # readinessProbe:
+          #   httpGet:
+          #     path: /
+          #     port: http
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}

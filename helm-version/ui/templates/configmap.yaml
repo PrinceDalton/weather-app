@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ .Values.app_name }}-configmap
+data:
+  REDIS_USER: {{ .Values.credentials.REDIS_USER }}
+  AUTH_HOST: {{ .Values.credentials.AUTH_HOST }}
+  AUTH_PORT: {{ .Values.credentials.AUTH_PORT }}
+  WEATHER_PORT: {{ .Values.credentials.WEATHER_PORT }}
+  WEATHER_HOST: {{ .Values.credentials.WEATHER_HOST }}
