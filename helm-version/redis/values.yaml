@@ -465,11 +465,11 @@ master:
     ## If set to "-", storageClassName: "", which disables dynamic provisioning
     ## If undefined (the default) or set to null, no storageClassName spec is set, choosing the default provisioner
     ##
-    storageClass: "opk-sc"
+    storageClass: ""
     ## @param master.persistence.accessModes Persistent Volume access modes
     ##
     accessModes:
-      - ReadWriteOnce
+      - ReadWriteMany
     ## @param master.persistence.size Persistent Volume size
     ##
     size: 2Gi
@@ -916,11 +916,11 @@ replica:
     ## If set to "-", storageClassName: "", which disables dynamic provisioning
     ## If undefined (the default) or set to null, no storageClassName spec is set, choosing the default provisioner
     ##
-    storageClass: "opk-sc"
+    storageClass: ""
     ## @param replica.persistence.accessModes Persistent Volume access modes
     ##
     accessModes:
-      - ReadWriteOnce
+      - ReadWriteMany
     ## @param replica.persistence.size Persistent Volume size
     ##
     size: 2Gi
@@ -1230,7 +1230,7 @@ sentinel:
     ## @param sentinel.persistence.accessModes Persistent Volume access modes
     ##
     accessModes:
-      - ReadWriteOnce
+      - ReadWriteMany
     ## @param sentinel.persistence.size Persistent Volume size
     ##
     size: 100Mi
