@@ -3,4 +3,4 @@ kind: ConfigMap
 metadata:
   name: {{ .Values.app_name }}-configmap
 data:
-  DB_HOST: {{ .Values.credentials.DB_HOST }}
+  DB_HOST: {{ .Values.auth.DB_HOST }}

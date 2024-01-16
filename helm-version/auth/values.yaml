@@ -39,7 +39,7 @@ securityContext: {}
   # runAsUser: 1000
 
 service:
-  type: NodePort
+  type: ClusterIP
   port: 8080
 
 ingress:
@@ -83,6 +83,6 @@ tolerations: []
 
 affinity: {}
 
-credentials:
+auth:
   DB_HOST: "mysql"
   DB_PASSWORD: "b3BrLXBhc3M="
